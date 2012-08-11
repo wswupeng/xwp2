@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>XWP</title>
+		<link rel="stylesheet" href="/static/style.css" type="text/css" media="screen" />
+	</head>
+
+	<body>
+		$:render.header()
+		$:render.sidebar()	
+
+		<div id="content">
+			$for entry in model.get_posts():
+				<div class="post">
+					<div class="post-title">
+						<h2>
+							<a href="/post/$entry.id" title="permanent link to $entry.title">$entry.title</a>
+							<span class="date">$datestr(entry.posted_on)</span>
+						</h2>
+					</div>
+										
+					<div class="post-body">
+						$:entry.content
+					</div>
+					
+					<div class="post-footer">
+						<p>
+							<span>posted in  
+							$ categories = model.get_post_categories(entry.id)
+							$if categories:
+								$for category in categories:
+									$category.name,  
+								| </span>
+							$else:
+								category None | </span>
+
+							<a href="/post/$entry.id#comments">comments($model.get_comment_num(entry.id))</a>
+						</p>
+					</div>
+				</div>
+		</div>
+		<!--<div id="content-footer" class="box">
+				<a href="#">1</a>
+				<a href="#">2</a>
+				<a href="#">3</a>
+				<a href="#">4</a>
+				<a href="#">5</a>
+		</div>-->
+
+		<div class="clear"></div>
+		$:render.footer()
+	</body>
+</html>

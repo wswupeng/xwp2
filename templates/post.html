@@ -1,0 +1,52 @@
+$def with(post_id)
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+	$ entry = model.get_post(post_id)
+	<head>
+		$if entry:
+			<title>$entry.title</title>
+		$else:
+			<title>XWP</title>
+		<link rel="stylesheet" href="/static/style.css" type="text/css" media="screen" />
+	</head>
+
+	<body>
+		$:render.header()
+		$:render.sidebar()
+		
+		<!--TODO: what if post_id invalid you should use if/else.???-->
+		$if entry: 
+			<div class="post">
+				<div class="post-title">
+					<h2>
+						<a href="/post/$post_id" title="permanent link to $entry.title">$entry.title</a>
+						<span class="date">$datestr(entry.posted_on)</span>
+					</h2>
+				</div>
+									
+				<div class="post-body">
+					$:entry.content
+				</div>
+				
+				<div class="post-footer">
+				$ categories = model.get_post_categories(post_id)
+				$if categories:
+					<p>
+						<span>posted in category: 
+						$for category in categories:
+							$category.name,  
+						</span>
+					</p>
+				$else: 
+					<p>category None</p>
+				</div>
+			</div>
+			$:render.comments(post_id)
+		$else:
+			$:render.not_found('cannot find the post')
+
+		<div class="clear"></div>
+		$:render.footer()	
+	</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+	<head>
+		<title>XWP admin</title>
+		<link rel="stylesheet" href="/static/admin_style.css" type="text/css" media="screen" />
+
+		<script type="text/javascript" src="/static/js/tinymce/tiny_mce_popup.js"></script>
+	</head>
+
+	<body>
+		<form enctype="multipart/form-data" method="post" action="/admin/upload">
+			<input type="file" id="fileToUpload" name="uploadFile" onchange="fileSelected();">
+			<input type="button" id="btnUpload" onclick="uploadFile()">
+
+			<ul style="list-style:none;margin:0;padding:0;">
+				<li id="fileName"></li>
+				<li id="fileSize"></li>
+				<li id="progressNumber"></li>
+			</ul>
+		</form>
+	</body>
+</html>
+

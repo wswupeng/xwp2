@@ -1,0 +1,117 @@
+/*global setting start*/
+body {
+	font-size : 90%;
+	margin : 0;
+}
+
+.floatleft {
+	float : left;
+	margin : 0;
+}
+
+.floatright {
+	float : right;
+	margin : 0;
+}
+
+.clear {
+	clear : both;
+}
+
+.heading {
+	background-color : #eaf3fa;
+	padding : 0.3em;
+	margin: 0;
+}
+
+h2{
+	font-size : 1.2em;
+}
+
+h1 {
+	font-size : 1.5em;
+}
+
+#sidebar, .post, .post-title, .post-footer, .box {
+	border-radius: 0.8em;
+	-moz-border-radius: 0.8em;
+	-webkit-border-radius: 0.8em;
+}
+
+.post, .box {
+	box-shadow: 0px 0px 2px #999;
+    -webkit-box-shadow: 0px 0px 2px #999;
+    -moz-box-shadow: 0px 0px 2px #999;
+}
+/*global setting end*/
+
+#header {
+	background : #464646;
+	color : #ccc;
+	padding : 1em;
+	margin-top: 0;
+	letter-spacing : 0.1em;
+}
+
+#header a {
+	text-decoration : none;
+	color : #ccc;
+}
+
+#sidebar {
+	border-style : solid;
+	border-width : 0.1em;
+	border-color : #ebebeb #ccc #ccc #ebebeb;
+	float : right;
+	padding : 1.5em;
+	margin : 1.5em;
+}
+
+#sidebar ul {
+	/*TODO*/
+	padding : 0 1.5em 0 1.5em;
+}
+
+.post {
+	width : 60%;
+	border-style : solid;
+	border-width : 0.1em;
+	border-color : #ebebeb #ccc #ccc #ebebeb;
+	padding : 1em;
+	margin : 1.5em 1.5em 1.5em 6em;
+}
+
+.post a {
+	text-decoration : none;
+}
+.post-title {
+	background-color : #eaf3fa;
+	padding : 0.3em;
+	margin: 0;
+}
+
+.post-footer {
+	background : #d3d3d3;
+	padding: 0 0.1em 0 0.4em;
+}
+
+.box {
+	width : 60%;
+	border-style : solid;
+	border-width : 0.1em;
+	border-color : #ebebeb #ccc #ccc #ebebeb;
+	padding : 1em;
+	margin : 1.5em 1.5em 1.5em 6em;
+}
+
+#content-footer {
+	background : #d3d3d3;
+}
+
+#footer {
+	bottom : auto;
+	background : #464646;
+	margin : 0.5em 0 0 0;
+	padding: 0.1em 0 0.1em 1em;
+}
+

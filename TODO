@@ -1,0 +1,28 @@
+[X]1. model 代码检查
+[ ]2. 数据库表重建  http://www.yolinux.com/TUTORIALS/LinuxTutorialMySQL.html
+[ ]3. admin/post.html post.html index.html 完整建设
+[ ]4. 校验数据合法性，目前重点是跑通流程, 所以暂不考虑数据合法性。
+[ ]5. author 头像 
+[ ]6. 分页
+[ ]7. model测试
+[ ]8. 静态文件（style.css） 
+[ ]9. /favicon.ico
+
+
+
+issues:
+当post内容较少时，footer不能紧贴浏览器底部
+
+post页面中的leave a reply 字体太小。 
+
+recent comment 要改为超链接。
+
+comment页内定位，要做好。
+
+leave a reply 下面的边框设置为虚线形式。
+
+comment输入框校验码，防止机器人spam
+
+如何在js端简单校验comment数据？
+
+怎么导入上一层目录的模块？

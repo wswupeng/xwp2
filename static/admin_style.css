@@ -1,0 +1,132 @@
+/*global setting start*/
+body {
+	font-size : 62.5%;
+	margin : 0;
+}
+.inside {
+	margin: 0;
+}
+
+.floatleft {
+	float : left;
+	margin : 0;
+}
+
+.floatright {
+	float : right;
+	margin : 0;
+}
+
+.clear {
+	clear : both;
+}
+
+.heading {
+	background-color : #eaf3fa;
+	padding : 0.3em;
+	margin: 0;
+}
+
+.stuffbox {
+	border-style : solid;
+	border-width : 0.1em;
+	border-color : #ebebeb #ccc #ccc #ebebeb;
+	margin-top: 1em;
+	margin-left: 2em;
+	width: 80%;
+}
+
+a, h2 {
+	font-size : 1.5em;
+}
+
+h1 {
+	font-size : 2em;
+}
+/*global setting end*/
+
+#dashboard {
+	background : #464646;
+	color : #ccc;
+	padding : 1em;
+	margin-top: 0;
+	letter-spacing : 0.1em;
+}
+
+#dashboard a {
+	text-decoration : none;
+	color : #ccc;
+	/*font-size : 1.5em; */
+}
+
+#header {
+	padding : 1em;
+	border-bottom : 0.1em solid #eaf3fa;
+	background-color : #eaf3fa;
+}
+
+#header a {
+	text-decoration : none;
+	font-size : 2em; 
+}
+
+#nav {
+	border-bottom : 0.1em solid #eaf3fa;
+	padding : 1em;
+	margin : 0;
+}
+
+#nav ul {
+	padding : 0;
+	margin : 0;
+}
+
+#nav ul li {
+	float : left;
+	display : block;
+	padding-right : 1em;
+}
+
+#nav ul li a {
+	text-decoration : none;
+	/*font-size : 1.5em; */
+}
+
+#post-stuff {
+	padding : 1em;
+	margin : 0;
+}
+
+#post-stuff h1 {
+	border-bottom : 0.1em solid #eaf3fa;
+	padding-bottom : 0.5em;
+	margin : 0;
+}
+
+#post-body {
+	padding-left : 1em;
+	padding-right : 1em;
+}
+
+#editor-div-header {
+	margin : 0;
+}
+
+#editor-div-header h2 {
+	float : left;
+	margin : 0;
+}
+
+#editor-visual, #editor-html {
+	float : right;
+	padding-right : 0.5em;
+}
+
+#footer {
+	background : #464646;
+	font-size : 1.5em;
+	margin : 0.5em 0 0 0;
+	padding: 0.1em;
+}
+
+

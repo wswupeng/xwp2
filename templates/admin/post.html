@@ -1,0 +1,81 @@
+$def with(post_id, i, msg_id)
+
+$if post_id:
+	$ entry = model.get_post(post_id)
+	$if entry:
+		$ title = entry.title
+		$ content = entry.content
+		$ slug = entry.slug
+		$ tag = entry.tag
+$elif i:
+	$ title = i.title
+	$ content = i.content
+	$ slug = i.slug
+	$ tag = i.tag
+$else:
+	$ title = '' 
+	$ content = ''
+	$ slug = ''
+	$ tag = ''
+
+$#create specified show_message.
+$ message_list = ['','update done','need title','3','4','5']
+$# it's not ok to do this.
+$ show_message = message_list[int(msg_id)]
+
+<div id="post-stuff">
+	<form action="/admin/post" method="post">
+		<h1>write post</h1>
+		
+		<div id="post-body">
+		<div id="title-div" class="stuffbox">
+			<h2 class="heading">title</h2>
+			<input type="text" id="title" tabindex="1" size="52" name="title" value="$title">
+		</div>
+
+		<div id="editor-div" class="stuffbox">
+			<div id="editor-div-header" class="heading">
+				<h2>post</h2>
+				
+				<div id="editor-html">
+					<h2>html</h2>
+				</div>
+				<div id="editor-visual">
+					<h2>visual</h2>
+				</div>
+
+				<div class="clear"></div>
+			</div>
+
+			<textarea style="width:99.7%; border:0em;" cols="40" rows="15" id="content" tabindex="2" name="content" >$:content</textarea>
+		</div>
+
+		<div id="post-slug" class="stuffbox">
+			<h2 class="heading">slug</h2>
+			<input type="text" id="slug-text" tabindex="3" size="52" name="slug" value="$slug">
+		</div>
+
+		<div id="post-tag" class="stuffbox">
+			<h2 class="heading">tag</h2>
+			<input type="text" id="tag-text" tabindex="4" size="52" name="tag" value="$tag">
+			<br/>
+		</div>
+
+		<input name="submit" type="submit"  id="submit" tabindex="5" value="update" />
+		<input type="hidden" name="post_id" value="$post_id" />
+
+		</div><!--end of #post-body-->
+	</form>
+</div><!--end of #post-stuff-->
+
+<script language="javascript" type="text/javascript" src="/static/js/tinymce/tiny_mce.js"></script> 
+
+<script type="text/javascript">
+	tinyMCE.init({
+        theme : "advanced",
+        mode : "textareas",
+        plugins : "fullpage",
+        theme_advanced_buttons3_add : "fullpage"
+     });
+</script>
+

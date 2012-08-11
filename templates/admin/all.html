@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+		<title>XWP admin</title>
+		<link rel="stylesheet" href="/home/wpeng/Ubuntu One/mycode/xwp2/templates/admin/style.css" type="text/css" media="screen" />
+		<!--<script type="text/javascript" src="/static/js/utils.js"></script>-->
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+
+		<!--this should contains in entry.html-->
+		<script type="text/javascript" src="/home/wpeng/Ubuntu One/mycode/xwp2/templates/admin/tinymce/tiny_mce.js"></script>
+		<script type="text/javascript" src="/home/wpeng/Ubuntu One/mycode/xwp2/templates/admin/tinymce/jquery.tinymce.js"></script>
+	</head>
+
+	<body>
+		<div id="dashboard">
+			<div class="floatleft">
+				<a href="/admin">[dashboard]</a>
+				<!--read using google app engine book, the logout function implementation. TODO-->
+				<a href="/logout">[logout]</a>
+				<!--there should have a language option.-->
+			</div>
+
+			<div class="floatright">
+				<a href="#">something here</a>
+			</div>
+
+			<div class="clear"></div>
+		</div>
+
+		<div id="header">
+			<a href="/" class="floatleft">XWP</a>
+			<h2 class="floatright">This is xwp blog</h2>
+			<div class="clear"></div>
+		</div>
+		
+		<div id="nav">
+			<ul>
+				<li><a href="/admin/entries/post">write</a></li>
+				<li><a href="/admin/config">configuration</a></li>
+			</ul>
+
+			<div class="clear"></div>
+		</div>
+
+		<div id="post-stuff">
+			<form action="/admin/post" method="post">
+				<h1>write post</h1>
+				
+				<div id="post-body">
+				<div id="title-div" class="stuffbox">
+					<h2 class="heading">title</h2>
+					<input type="text" id="title" tabindex="1" size="52" name="post-title">
+				</div>
+
+				<div id="editor-div" class="stuffbox">
+					<div id="editor-div-header" class="heading">
+						<h2>post</h2>
+						
+						<div id="editor-html">
+							<h2>html</h2>
+						</div>
+						<div id="editor-visual">
+							<h2>visual</h2>
+						</div>
+
+						<div class="clear"></div>
+					</div>
+
+					<textarea style="width:99.7%; border:0em;" cols="40" rows="15" id="content" name="content"></textarea>
+				</div>
+
+				<div id="post-slug" class="stuffbox">
+					<h2 class="heading">slug</h2>
+					<input type="text" id="slug-text" tabindex="1" size="52" name="post-slug">
+				</div>
+
+				<div id="post-tag" class="stuffbox">
+					<h2 class="heading">tag</h2>
+					<input type="text" id="tag-text" tabindex="2" size="52" name="post-tag">
+					<br/>
+				</div>
+
+				</div><!--end of #post-body-->
+			</form>
+		</div><!--end of #post-stuff-->
+
+		<div id="footer">	
+			<p>This is the xwp admin footer</p>
+		</div>
+	</body>
+</html>
+

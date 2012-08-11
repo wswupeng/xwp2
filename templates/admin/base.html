@@ -1,0 +1,51 @@
+$def with(page)
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+		<title>XWP admin</title>
+		<link rel="stylesheet" href="/static/admin_style.css" type="text/css" media="screen" />
+		<!--<script type="text/javascript" src="/static/js/utils.js"></script>-->
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+		$#add js hook. $:content.js.
+	</head>
+
+	<body>
+		<div id="dashboard">
+			<div class="floatleft">
+				<a href="/admin">[dashboard]</a>
+				<!--read using google app engine book, the logout function implementation. TODO-->
+				<a href="/logout">[logout]</a>
+				<!--there should have a language option.-->
+			</div>
+
+			<div class="floatright">
+				<a href="#">something here</a>
+			</div>
+
+			<div class="clear"></div>
+		</div>
+
+		<div id="header">
+			<a href="/" class="floatleft">XWP</a>
+			<h2 class="floatright">This is xwp blog</h2>
+			<div class="clear"></div>
+		</div>
+		
+		<div id="nav">
+			<ul>
+				<li><a href="/admin/entries/post">write</a></li>
+				<li><a href="/admin/config">configuration</a></li>
+			</ul>
+
+			<div class="clear"></div>
+		</div>
+
+		$:page
+		
+		<div id="footer">	
+			<p>This is the xwp admin footer</p>
+		</div>
+	</body>
+</html>
+
