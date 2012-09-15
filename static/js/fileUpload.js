@@ -51,9 +51,13 @@ function uploadProgress(evt){
 function uploadComp(evt){
 	document.getElementById("progressNumber").innerHTML = "上传状态：成功";
 	document.getElementById("btnUpload").disabled = false;
-
-	var r = JSON.parse(xhr.responseText);
-	callback(r.url);
+	
+	if((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
+		var r = JSON.parse(xhr.responseText);
+		callback(r.url);
+	} else {
+		//TODO
+	}
 }
 
 function uploadFailed(evt){
