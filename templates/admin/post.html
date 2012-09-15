@@ -1,4 +1,4 @@
-$def with(post_id, i, msg_id)
+$def with(post_id, i, msg)
 
 $if post_id:
 	$ entry = model.get_post(post_id)
@@ -6,25 +6,24 @@ $if post_id:
 		$ title = entry.title
 		$ content = entry.content
 		$ slug = entry.slug
-		$ tag = entry.tag
+		$# tag = entry.tag
 $elif i:
 	$ title = i.title
 	$ content = i.content
 	$ slug = i.slug
-	$ tag = i.tag
+	$# tag = i.tag
+
 $else:
 	$ title = '' 
 	$ content = ''
 	$ slug = ''
-	$ tag = ''
-
-$#create specified show_message.
-$ message_list = ['','update done','need title','3','4','5']
-$# it's not ok to do this.
-$ show_message = message_list[int(msg_id)]
+	$# tag = ''
 
 <div id="post-stuff">
-	<form action="/admin/post" method="post">
+$if post_id: <form action="/admin/edit-post" method="post">
+$else:	<form action="/admin/new-post" method="post">
+
+		<h1>$msg</h1>
 		<h1>write post</h1>
 		
 		<div id="post-body">
@@ -55,15 +54,18 @@ $ show_message = message_list[int(msg_id)]
 			<input type="text" id="slug-text" tabindex="3" size="52" name="slug" value="$slug">
 		</div>
 
-		<div id="post-tag" class="stuffbox">
+		<!--<div id="post-tag" class="stuffbox">
 			<h2 class="heading">tag</h2>
-			<input type="text" id="tag-text" tabindex="4" size="52" name="tag" value="$tag">
+			<input type="text" id="tag-text" tabindex="4" size="52" name="tag" value="$#tag">
 			<br/>
-		</div>
+		</div>-->
 
-		<input name="submit" type="submit"  id="submit" tabindex="5" value="update" />
 		<input type="hidden" name="post_id" value="$post_id" />
-
+		$if post_id:
+			$ submit_value = 'update'
+		$else:
+			$ submit_value = 'publish'
+		<input name="submit" type="submit" id="submit" tabindex="5" value=$submit_value />
 		</div><!--end of #post-body-->
 	</form>
 </div><!--end of #post-stuff-->
@@ -77,5 +79,46 @@ $ show_message = message_list[int(msg_id)]
         plugins : "fullpage",
         theme_advanced_buttons3_add : "fullpage"
      });
+     /*tinyMCE.init({
+				theme : "advanced",
+
+				plugins : "safari,pagebreak,save,advhr,advimage,advlink,emotions, inlinepopups,media,directionality,visualchars,nonbreaking,emotions,fullscreen,preview,wordpress,syntaxhl",
+
+		    theme_advanced_buttons1:"bold,italic,strikethrough,|,bullist,numlist,blockquote,|,forecolor,backcolor,|,justifyleft,justifycenter,justifyright,|,link,unlink,image,wp_more,code,preview,|,fullscreen,syntaxhl,wp_adv",
+		    theme_advanced_buttons2:"styleselect,formatselect,fontselect,fontsizeselect,underline,justifyfull,forecolor,|,pastetext,pasteword,removeformat,|,media,charmap,emotions,|,outdent,indent,|,undo,redo",
+		    theme_advanced_buttons3:"",
+		    theme_advanced_buttons4:"",
+
+			theme_advanced_toolbar_location : "top",
+			theme_advanced_toolbar_align : "left",
+			theme_advanced_statusbar_location : "bottom",
+			theme_advanced_resizing : true,
+	        language : "ch",
+	        skin :"wp_theme_zh",
+
+			// Example content CSS (should be your site CSS)
+			content_css : "/static/js/tinymce/wordpress.css",
+			extended_valid_elements : "textarea[cols|rows|disabled|name|readonly|class]",
+
+			file_browser_callback: 'xwp_file',
+     } 
+     );
+
+	function xwp_file(field_name, url, type, win){
+	   tinyMCE.activeEditor.windowManager.open({
+			file : '/admin/upload, 
+			title : 'files',
+			width : 420,
+			height : 200,
+			resizable : "no",
+			inline : "yes",
+			popup_css: false,
+			close_previous : "no"
+		}, {
+			window : win,  //告诉它是被谁弹出来的
+			input : field_name  //这个是指生成的图片地址要往哪里填
+		});
+		return false;
+	  }*/
 </script>
 

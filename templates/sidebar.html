@@ -1,16 +1,18 @@
 <div id="sidebar">
 	<div id="comments">
 		<h2 class="heading">Recent comments</h2>
-		$ comments = model.get_comments(limit=10)
+		$ comments = model.get_comments(limit='0,10')
 		$if comments:
 			<ul>
-			<!--TODO use excerpt, and show the author,and show hyperlink.-->
+			<!--TODO use excerpt, show the author, show hyperlink.-->
 				$for comment in comments:
 					<li>$:comment.content</li>
 			</ul>
 		$else:
 			<p>None</p>
 	</div>
+	
+	<!--TODO model.get_all_categories-->
 	<div id="categories">
 		<h2 class="heading">Categorys</h2>
 		$ categories = model.get_all_categories()
@@ -18,8 +20,8 @@
 			<ul>
 				<!--TODO how to show parent? 
 					and you should add hyperlink to it-->
-					$for category in categories:
-						<li>$category.name</li>
+				$for category in categories:
+					<li>$category.name</li>
 			</ul>
 		$else:
 			<p>None</p>
