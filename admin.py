@@ -7,6 +7,7 @@ import simplejson as json
 import md5
 import random
 import utils
+import os
 
 MESSAGE_NONE = '' 
 MESSAGE_UPDATE_DONE = 'update post done.'
@@ -92,20 +93,22 @@ class EditPost(object):
 class Admin(object):
 	def GET(self):
 		utils.seeother_if_notadmin('/login')		
+"""
 
 class Upload(object):
 	def GET(self):
 		return render.admin.upload()
 
+	#TODO chdir file dir.
 	def POST(self):
-		i = web.input(FileData=None, FileName='', FileSize=0)
+		i = web.input(FileData=None, FileName=None, FileSize=None)
 
 		if i.FileData and i.FileName and i.FileSize: 
-			key = model.new_uploadinfo(i.FileName, i.FileSize)
-			
+			key = str(random.random())[2:] + str(random.random())[2:] + str(random.random())[2:]
+
 			y = datetime.now().year
 			m = datetime.now().month
-			year_dir = 'uploads/' + str(y)
+			year_dir = 'static/uploads/' + str(y)
 			month_dir = year_dir + '/' + str(m)
 
 			if not os.path.exists(year_dir):
@@ -113,21 +116,23 @@ class Upload(object):
 			if not os.path.exists(month_dir):
 				os.mkdir(month_dir)
 			
-			file_path = month_dir + '/' + str(key) + '_' + i.FileName
+			file_path = month_dir + '/' + key + '_' + i.FileName
 			
 			try:
 				f = open(file_path, 'wb')
 				f.write(i.FileData)
 				f.close()
 
-				return json.dumps({'url': file_path})
+				return json.dumps({'url': '/' + file_path})
 			except:
 				if os.path.isfile(file_path):
 					os.remove(file_path)
 
 				# how to set http status? see web.webapi
 				web.badrequest()
-
+		else:
+			print i.FileData == {} or i.FileData == None, i.FileName, i.FileSize
+"""
 class Login(object):
 	def GET(self):
 		if utils.is_admin():

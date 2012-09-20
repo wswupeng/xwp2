@@ -10,7 +10,6 @@ import web, datetime
 """
 db = web.database(dbn='mysql', db='blog2', user='root', pw='wpeng')
 
-
 def _del_term_relationship(post_id, term_type):
 	db.delete('term_relationship', where='post_id=$post_id and term_type=$term_type', vars=locals())
 
@@ -24,7 +23,7 @@ def _insert_term_relationship(post_id, term_array, term_type):
 			term_id = 1
 		elif term_type == "post_tag":
 			term_id = 2
-		db.insert('term_relationship', post_id=post_id, term_id=term_id, term_type=term_type)	
+		db.insert('term_relationship', post_id=post_id, term_id=term_id, term_type=term_type)
 
 def get_posts(limit=None, post_type='blog', order='posted_on DESC'):
 	try:

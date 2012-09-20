@@ -6,13 +6,13 @@
 		<link rel="stylesheet" href="/static/admin_style.css" type="text/css" media="screen" />
 
 		<script type="text/javascript" src="/static/js/tinymce/tiny_mce_popup.js"></script>
-		<script type="text/javascript" src="/static/js/fileUpload.js"></script>
+		<script type="text/javascript" src="/static/js/upload.js"></script>
 	</head>
 
 	<body>
 		<form enctype="multipart/form-data" method="post" action="/admin/upload">
-			<input type="file" id="fileToUpload" name="uploadFile" onchange="fileSelected();">
-			<input type="button" id="btnUpload" onclick="uploadFile()">
+			<input type="file" id="fileToUpload" name="uploadFile" onchange="update_file_selected();">
+			<input type="button" id="btnUpload" value="upload" onclick="upload_file()">
 
 			<ul style="list-style:none;margin:0;padding:0;">
 				<li id="fileName"></li>

@@ -49,4 +49,3 @@ class Feed(object):
 		return render.rss()
 """
 
-
