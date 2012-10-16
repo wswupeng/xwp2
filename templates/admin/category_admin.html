@@ -1,0 +1,35 @@
+<div id="category-admin">
+	<form action="/admin/category-admin" method="post">
+		<h1>manage category</h1>
+		<input type="submit" name="delete" value="1" />
+
+		<table>
+			<thead>
+				<tr>
+					<th><input type="checkbox"></th>
+					<th>category name</th>
+					<th>category id</th>
+					<th>parent id</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				$for c in model.get_all_categories():
+					<tr>
+						<td>						
+							<input type="checkbox" name="del_category_array" id="category-$c.id" size="45" tabindex="4" value="$c.id"/>
+						</td>
+						<td>
+							$c.name <a href="/admin/edit-category?cid=$c.id">edit</a>
+						</td>
+						<td>
+							$c.id	
+						</td>
+						<td>
+							$c.parent_id
+						</td>
+					</tr>
+			</tbody>
+		</table>
+	</form>
+</div>

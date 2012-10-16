@@ -113,9 +113,19 @@ create table term_relationship
 	post_id int not null,  
 	term_id int not null, 
 	term_type varchar(255) not null check(term_type in ('post_tag', 'post_category')), 
+
 	primary key (post_id, term_id),
 	foreign key (post_id) references posts(id),
 	foreign key (term_id) references terms(id)
+);
+
+create table options
+(
+	is_custom int not null, /*0:system options, 1:custom options.*/
+	option_name text not null,
+	option_value text not null,
+
+	primary key (option_name)
 );
 
 

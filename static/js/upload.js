@@ -1,8 +1,32 @@
 var xhr = new XMLHttpRequest();
+/*var FileBrowserDialogue = {
+	init : function () {
+		   // Here goes your code for setting your custom things onLoad.
+	},
+	mySubmit : function (e) {
+	   var win = tinyMCEPopup.getWindowArg("window");
 
-function callback(e) {
-	var win = tinyMCEPopup.getWindowArg("window");                     
+	   // insert information now
+	   win.document.getElementById(tinyMCEPopup.getWindowArg("input")).value = e;
+
+	   // are we an image browser
+	   if (typeof(win.ImageDialog) != "undefined")
+	   {
+		   // we are, so update image dimensions and preview if necessary
+		   if (win.ImageDialog.getImageData) win.ImageDialog.getImageData();
+		   if (win.ImageDialog.showPreviewImage) win.ImageDialog.showPreviewImage(URL);
+	   }
+
+	   // close popup window
+	   tinyMCEPopup.close();
+   }
+}*/
+
+function callback(e)
+{
+	var win = tinyMCEPopup.getWindowArg("window");  
 	win.document.getElementById(tinyMCEPopup.getWindowArg("input")).value = e;
+
 	tinyMCEPopup.close();
 }
 
@@ -20,7 +44,6 @@ function update_file_selected()
 
 function upload_file()
 {	
-	//alert("OK");
 	var form = new FormData();
 	var file = document.getElementById("fileToUpload").files[0];
 	form.append("FileData", file);
@@ -32,11 +55,13 @@ function upload_file()
 	xhr.addEventListener("error", upload_failed, false);
 	xhr.addEventListener("abort", upload_canceled, false);
 
+	//tinyMCEPopup.onInit.add(FileBrowserDialogue.init, FileBrowserDialogue);
 	xhr.open("POST", "/admin/upload");
 	xhr.send(form);
 
 	document.getElementById("btnUpload").disabled = true;
 	document.getElementById("progressNumber").innerHTML = "uploading...";
+
 }
 
 function upload_complete(evt)
@@ -48,6 +73,8 @@ function upload_complete(evt)
 		document.getElementById("btnUpload").disabled = false;
 
 		callback(r.url);
+		
+		//FileBrowserDialogue.mySubmit(r.url);
 	}
 	else
 	{

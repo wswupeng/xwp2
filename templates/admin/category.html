@@ -1,0 +1,49 @@
+$def with(category_id, i, msg)
+
+$if i:
+	$ name = i.name
+	$ parent_id = i.parent_id
+	$ description = i.description
+$elif category_id:
+	$ c = model.get_category(category_id)
+	$if category:
+		$ name = c.name
+		$ parent_id = c.parent_id
+		$ description = c.description
+$else:
+	$ name = '' 
+	$ parent_id = ''
+	$ description = '' 
+
+<div id="category-stuff">
+	<h1>$msg</h1>
+	$if category_id: 
+		<form action="/admin/edit-category/$category_id" method="post">
+		<h1>edit category</h1>
+	$else: 
+		<form action="/admin/new-category" method="post">
+		<h1>new category</h1>
+	
+	<div id="category-name" class="stuffbox">
+		<h2 class="heading">name</h2>
+		<input type="text" id="name" tabindex="3" size="52" name="name" value="$name" />
+	</div>
+	
+	<div id="category-description" class="stuffbox">
+		<h2 class="heading">description</h2>
+		<input type="text" id="description" tabindex="3" size="52" name="description" value="$description" />
+	</div>
+
+	<div id="parent_id_select" class="stuffbox">
+		<select name="parent_id">
+			<option value="0">None</option>
+			$for p in model.get_all_category():
+				$if p.id != category_id:
+					<option value="$p.id">$p.name</option>
+		</select>
+	</div>
+
+	<input name="submit" type="submit" id="submit" tabindex="5" value="save" />
+
+	</form>
+</div>

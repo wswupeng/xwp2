@@ -1,0 +1,51 @@
+<div id="post-admin">
+	<form action="/admin/post-admin" method="post">
+		<h1>
+			manage posts (<a href="/admin/new-post">new</a>)
+		</h1>
+		<!-- TODO, get post num 
+			<h2>all posts(model.get_posts)</h2>
+		-->
+		<input type="submit" name="delete" value="1" />
+		<table>
+			<thead>
+				<tr>
+					<th><input type="checkbox"></th>
+					<th>post date</th>
+					<th>post title</th>
+					<th>author</th>
+					<th>comment number</th>
+					<th>post status</th>
+					<th>comment status</th>
+				</tr>
+			</thead>
+			<tbody>
+				$for p in model.get_posts():
+					<tr>
+						<td>						
+							<input type="checkbox" name="del_post_array" id="post-$p.id" size="45" tabindex="4" value="$p.id"/>
+						</td>
+						<td>
+							$p.posted_on
+						</td>
+						<td>
+							$p.title <a href="/admin/edit-post?post-id=$p.id">edit</a>
+						</td>
+						<td>
+							admin	
+						</td>
+						<td>
+							$model.get_comment_num(p.id)
+						</td>
+						<td>
+							$p.post_status	
+						</td>
+						<td>
+							$p.comment_status
+						</td>
+					</tr>
+			</tbody>
+		</table>
+	</form>
+</div>
+

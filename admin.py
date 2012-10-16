@@ -44,25 +44,22 @@ class NewPost(object):
 									   i.comment_status, i.post_status, 
 									   i.tags, i.categories)
 			if insert_id:
-				raise web.seeother("/admin/edit-post?post_id=%d&message=%s" % (insert_id, MESSAGE_NEW_POST_DONE))
+				raise web.seeother("/admin/edit-post/%d?message=%s" % (insert_id, MESSAGE_NEW_POST_DONE))
 			else:
 				return admin_render.post(None, i, MESSAGE_NEW_POST_ERROR)
 		else:
 			return admin_render.post(None, i, MESSAGE_NEED_TITLE_OR_CONTENT)
 
 class EditPost(object):
-	def GET(self):
+	def GET(self, post_id):
 		# get from QUERY_STRING
-		i = web.input(post_id=None, message=MESSAGE_NONE)
+		i = web.input(message=MESSAGE_NONE)
 
-		if not i.post_id: 
-			raise web.seeother('/admin')
-
-		#TODO validate i.post_id in html?
+		#TODO validate post_id in html?
 		#TODO how to accept *args/**kargs in template?
-		return admin_render.post(int(i.post_id), None, i.message)
+		return admin_render.post(post_id, None, i.message)
 	
-	def POST(self): 
+	def POST(self, post_id): 
 		# get from http post form data.
 		i = web.input(author_id=None, title=None, 
 					  content=None, excerpt=None, 
@@ -70,30 +67,24 @@ class EditPost(object):
 					  comment_status='open', post_status='published', 
 					  tags=[], categories=[])
 		
-		if not i.post_id:
-			raise web.seeother('/admin')
-
 		#TODO author id	
 		#TODO slug 
 		if i.slug == '': i.slug = None
 		i.author_id = 1
 
 		values = dict(i)
-		values.pop('post_id')
 		values.pop('submit')
 	
 		
-		if model.update_post(int(i.post_id), **values):
-			raise web.seeother("/admin/edit-post?post_id=%d&message=%s" % (int(i.post_id), MESSAGE_UPDATE_DONE))
+		if model.update_post(post_id, **values):
+			raise web.seeother("/admin/edit-post/%d?message=%s" % (post_id, MESSAGE_UPDATE_DONE))
 		else:
-			return admin_render.post(None, i, MESSAGE_UPDATE_ERROR)
+			return admin_render.post(post_id, i, MESSAGE_UPDATE_ERROR)
 
-#temporary disable it. 
-"""
 class Admin(object):
 	def GET(self):
-		utils.seeother_if_notadmin('/login')		
-"""
+		# utils.seeother_if_notadmin('/login')		
+		raise web.seeother('/admin/setup')
 
 class Upload(object):
 	def GET(self):
@@ -174,3 +165,113 @@ class Logout(object):
 
 		raise web.seeother('/index')
 """		
+
+class NewCategory(object):
+	def GET(object):
+		return admin_render.category(None, None, None)
+
+	def POST(object):
+		i = web.input(name=None, parent_id=0, description='')
+		
+		if i.name:
+			cid = model.new_category(name=i.name, 
+							  parent_id=i.parent_id, 
+							  description=i.description)
+		if cid:
+			web.seeother('/admin/edit-category/%d?message="new category done."', cid)
+		else:
+			return admin_render.category(None, i, 'new category error.')
+
+class EditCategory(object):
+	def GET(self, cid):
+		i = web.input(message=None)
+		return admin_render.category(cid, None, None)
+
+	def POST(self, cid):
+		i = web.input(name='', description='', parent_id=0)
+
+		if not i.name:
+			return admin_render.category(cid, i, 'name must be provided.')
+		else: 
+			if model.update_category(name=i.name, description=i.description, parent_id=i.parent_id):
+			return admin_render.category(cid, i, 'category update ok.')
+
+class Setup(object):
+	def GET(self):
+		i = web.input(message=None)
+		return render.admin.setup(i.message)
+	
+	def POST(self):
+		i = web.input()
+
+		d = dict(i)
+		# TODO, should we initial the options in init?
+		if model.update_options(**d):
+			raise web.seeother('/admin/setup?message=update setup done.')
+		else:	
+			raise web.seeother('/admin/setup?message=update setup failed.')
+
+class PostAdmin(object):
+	def GET(self):
+		return render.admin.post_admin()
+
+	def POST(self):
+		i = web.input(del_post_array=[])
+
+		for pid in del_post_array:
+			if not model.delete_post(pid):
+				pass
+				# log error delete failed.
+
+		raise web.seeother("/admin/post-admin")
+
+# maybe here we need check code, it's dangerous to delete anything.
+class CategoryAdmin(object):
+	def GET(self):
+		return render.admin.category_admin()		
+	
+	def POST(self):
+		i = web.input(del_category_array=[])
+
+		for cid in del_category_array:
+			if not model.delete_category(cid):
+				pass
+		
+		raise web.seeother("/admin/category-admin")
+
+class UserAdmin(object):
+	def GET(self):
+		return render.admin.user_admin()
+	
+	def POST(self):
+		# not implemented.
+		pass	
+
+class CommentAdmin(object):
+	def GET(self):
+		return render.admin.comment_admin()
+	
+	def POST(self):
+		pass
+
+class PageAdmin(object):
+	def GET(self):
+		return render.admin.page_admin()
+	
+	def POST(self):
+		i = web.input(del_page_array=[])
+
+		# page is 'page' post_type post.
+		for pid in del_page_array:
+			if not model.delete_post(pid):
+				pass
+
+		raise web.seeother("/admin/page-admin")
+
+class LinkAdmin(object):
+	def GET(self):
+		return render.admin.link_admin()
+	
+	def POST(self):
+		pass
+	

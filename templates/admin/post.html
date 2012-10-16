@@ -1,6 +1,13 @@
 $def with(post_id, i, msg)
 
-$if post_id:
+$if i:
+	$ title = i.title
+	$ content = i.content
+	$ slug = i.slug
+	$ checked_categories = i.categories
+	$ excerpt = i.excerpt
+	$# tag = i.tag
+$elif post_id:
 	$ entry = model.get_post(post_id)
 	$ checked_categories = model.get_post_categories(post_id) 
 	$if entry:
@@ -8,23 +15,19 @@ $if post_id:
 		$ content = entry.content
 		$ slug = entry.slug
 		$ categories = model.get_all_categories()
+		$ excerpt = entry.excerpt
 		$# tag = entry.tag
-$elif i:
-	$ title = i.title
-	$ content = i.content
-	$ slug = i.slug
-	$ checked_categories = i.categories
-	$# tag = i.tag
-
 $else:
 	$ title = '' 
 	$ content = ''
 	$ slug = ''
 	$ checked_categories = [] 
+	$ excerpt = ''
+	$# tag = i.tag
 	$# tag = ''
 
 <div id="post-stuff">
-$if post_id: <form action="/admin/edit-post" method="post">
+$if post_id: <form action="/admin/edit-post/$post_id" method="post">
 $else:	<form action="/admin/new-post" method="post">
 
 		<h1>$msg</h1>
@@ -33,7 +36,7 @@ $else:	<form action="/admin/new-post" method="post">
 		<div id="post-body">
 		<div id="title-div" class="stuffbox">
 			<h2 class="heading">title</h2>
-			<input type="text" id="title" tabindex="1" size="52" name="title" value="$title">
+			<input type="text" id="title" tabindex="1" size="52" name="title" value="$title" />
 		</div>
 
 		<div id="editor-div" class="stuffbox">
@@ -50,7 +53,7 @@ $else:	<form action="/admin/new-post" method="post">
 				<div class="clear"></div>
 			</div>
 
-			<textarea style="width:99.7%; border:0em;" cols="40" rows="15" id="content" tabindex="2" name="content" >$:content</textarea>
+			<textarea style="width:99.7%; border:0em;" cols="50" rows="15" id="content" tabindex="2" name="content" >$:content</textarea>
 		</div>
 
 		<div id="category-div" class="stuffbox">
@@ -68,16 +71,21 @@ $else:	<form action="/admin/new-post" method="post">
 	
 		<div id="post-slug" class="stuffbox">
 			<h2 class="heading">slug</h2>
-			<input type="text" id="slug-text" tabindex="3" size="52" name="slug" value="$slug">
+			<input type="text" id="slug-text" tabindex="3" size="52" name="slug" value="$slug" />
+		</div>
+
+		<div id="post-excerpt" class="stuffbox">
+			<h2 class="heading">excerpt</h2>
+			<input type="text" id="excerpt-text" tabindex="3" size="52" name="excerpt" value="$excerpt" />
 		</div>
 
 		<!--<div id="post-tag" class="stuffbox">
 			<h2 class="heading">tag</h2>
-			<input type="text" id="tag-text" tabindex="4" size="52" name="tag" value="$#tag">
+			<input type="text" id="tag-text" tabindex="4" size="52" name="tag" value="$#tag" />
 			<br/>
-		</div>-->
+		</div>
 
-		<input type="hidden" name="post_id" value="$post_id" />
+		<input type="hidden" name="post_id" value="$post_id" />-->
 		$if post_id:
 			$ submit_value = 'update'
 		$else:
@@ -88,15 +96,61 @@ $else:	<form action="/admin/new-post" method="post">
 </div><!--end of #post-stuff-->
 
 <script language="javascript" type="text/javascript" src="/static/js/tinymce/tiny_mce.js"></script> 
-
 <script type="text/javascript">
-	tinyMCE.init({
+/*	tinyMCE.init({
         theme : "advanced",
         mode : "textareas",
         plugins : "fullpage",
         theme_advanced_buttons3_add : "fullpage",
 		file_browser_callback: 'xwp_file'
      });
+*/
+
+	tinyMCE.init({
+		// General options
+		mode : "textareas",
+		theme : "advanced",
+		plugins : "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
+
+		// Theme options
+		theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
+		theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+		theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
+		theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,pagebreak,restoredraft,visualblocks",
+		theme_advanced_toolbar_location : "top",
+		theme_advanced_toolbar_align : "left",
+		theme_advanced_statusbar_location : "bottom",
+		theme_advanced_resizing : true,
+
+		// Example content CSS (should be your site CSS)
+		content_css : "css/content.css",
+
+		// Drop lists for link/image/media/template dialogs
+		template_external_list_url : "lists/template_list.js",
+		external_link_list_url : "lists/link_list.js",
+		external_image_list_url : "lists/image_list.js",
+		media_external_list_url : "lists/media_list.js",
+
+		// Style formats
+		style_formats : [
+			{title : 'Bold text', inline : 'b'},
+			{title : 'Red text', inline : 'span', styles : {color : '#ff0000'}},
+			{title : 'Red header', block : 'h1', styles : {color : '#ff0000'}},
+			{title : 'Example 1', inline : 'span', classes : 'example1'},
+			{title : 'Example 2', inline : 'span', classes : 'example2'},
+			{title : 'Table styles'},
+			{title : 'Table row 1', selector : 'tr', classes : 'tablerow1'}
+		],
+
+		// Replace values for the template plugin
+		template_replace_values : {
+			username : "Some User",
+			staffid : "991234"
+		},
+
+		file_browser_callback: 'xwp_file'
+	});
+
      /*
      tinyMCE.init({
 				theme : "advanced",

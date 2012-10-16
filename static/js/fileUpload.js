@@ -24,6 +24,7 @@ function fileSelected() {
 	//document.getElementById("fileType").innerHTML = "类型: " + file.type;
 	document.getElementById("progressNumber").innerHTML = "";
 }
+
 function uploadFile(){
 	var fd = new FormData();
 	fd.append("FileData", document.getElementById("fileToUpload").files[0]);

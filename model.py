@@ -9,6 +9,7 @@ import web, datetime
 	check database yizhixing.	
 """
 db = web.database(dbn='mysql', db='blog2', user='root', pw='wpeng')
+_option_cache = None
 
 def _del_term_relationship(post_id, term_type):
 	db.delete('term_relationship', where='post_id=$post_id and term_type=$term_type', vars=locals())
@@ -163,6 +164,7 @@ def new_category(name, parent_id=0, description=''):
 def update_category(id, **kargs):
 	try:
 		db.update('terms', where='id=$id', vars=locals(), **kargs)
+
 		return True
 	except:
 		return False
@@ -192,6 +194,29 @@ def delete_category(id):
 
 	return True
 
+def get_option(name):
+	if not _option_cache:
+		db.select('options', where='is_custom=0', what='option_name,option_value')
+		_option_cache = dict()
+		for x in s:
+			_option_cache.update(x)
+
+	if name in _option_cache:
+		return _option_cache[name]
+	else:
+		try:
+			r = db.select('options', where='option_name=$name', vars=locals())[0].option_value
+			_option_cache[name] = r
+
+			return r
+		except:
+			return None
+
+"""
+def get_blogrolls(limit=None):
+	return None
+
+
 def new_uploadinfo(file_name, file_size):
 	try:
 		return db.insert('uploads', file_name=file_name, file_size=file_size)
@@ -204,11 +229,6 @@ def get_uploadinfo(key):
 	except:
 		return None
 
-def get_blogrolls(limit=None):
-	return None
-
-
-"""
 #TODO USE OPTIONS table.
 class GlobalInfo(object):
 	def __init__(self):
