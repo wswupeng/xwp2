@@ -9,6 +9,8 @@ import web, datetime
 	check database yizhixing.	
 """
 db = web.database(dbn='mysql', db='blog2', user='root', pw='wpeng')
+
+# TODO option cache, 
 _option_cache = None
 
 def _del_term_relationship(post_id, term_type):
@@ -76,6 +78,7 @@ def update_post(post_id, **kargs):
 	except:
 		return False
 
+#TODO dont really delete posts, just modify the tag.
 def delete_post(post_id):
 	try:
 		db.delete('posts', where='id=$post_id', vars=locals())
@@ -140,19 +143,17 @@ def get_post_categories(post_id):
 def get_all_categories():
 	return db.select('terms', where='type="post_category"').list()
 
-"""
-#TODO its now not correct.
-def get_category_tree():
-	from tree import TreeNode
-	root = TreeNode()
-	for c in db.select('categories'):
-		node = TreeNode(c)
-		if c.parent_id == 0:
-			root.add_child(node)
-		else:
-			for n in root:
-				if n.value.id == c.parent_id: n.add_child(node)
-"""	
+##TODO its now not correct.
+#def get_category_tree():
+#	from tree import TreeNode
+#	root = TreeNode()
+#	for c in db.select('categories'):
+#		node = TreeNode(c)
+#		if c.parent_id == 0:
+#			root.add_child(node)
+#		else:
+#			for n in root:
+#				if n.value.id == c.parent_id: n.add_child(node)
 
 """parent_id=0 means no parent."""
 def new_category(name, parent_id=0, description=''):
@@ -195,60 +196,82 @@ def delete_category(id):
 	return True
 
 def get_option(name):
-	if not _option_cache:
-		db.select('options', where='is_custom=0', what='option_name,option_value')
-		_option_cache = dict()
-		for x in s:
-			_option_cache.update(x)
+	try:
+		return db.select('options', where='name=$name', vars=locals())[0].value
 
-	if name in _option_cache:
-		return _option_cache[name]
-	else:
+	except:
+		return None
+
+def update_options(**kargs):
+	try:
+		for k,v in kargs.items():
+			db.update('options', where='name=$k', vars=locals(), value=v)
+		
+		return True
+	except:
+		return False
+
+def get_user(name):
 		try:
-			r = db.select('options', where='option_name=$name', vars=locals())[0].option_value
-			_option_cache[name] = r
-
-			return r
+			return db.select('users', where='name=$name', vars=locals())[0]
 		except:
 			return None
 
-"""
-def get_blogrolls(limit=None):
-	return None
+#def get_option(name):
+#	global _option_cache
+#	if not _option_cache:
+#		db.select('options', where='is_custom=0', what='option_name,option_value')
+#		_option_cache = dict()
+#		for x in s:
+#			_option_cache.update(x)
+#
+#	if name in _option_cache:
+#		return _option_cache[name]
+#	else:
+#		try:
+#			r = db.select('options', where='name=$name', vars=locals())[0].value
+#			_option_cache[name] = r
+#
+#			return r
+#		except:
+#			return None
 
-
-def new_uploadinfo(file_name, file_size):
-	try:
-		return db.insert('uploads', file_name=file_name, file_size=file_size)
-	except:
-		return None
-
-def get_uploadinfo(key):
-	try:
-		return db.select('uploads', where='id=$key', vars=locals())[0]
-	except:
-		return None
-
-#TODO USE OPTIONS table.
-class GlobalInfo(object):
-	def __init__(self):
-		#read basic db info from db.
-		#read from web.ctx.
-		try:
-			self.delegate = db.select('ginfo', where='id=1')[0]
-		except:
-			# the table now is empty.
-			# if insert failed, we consider it as a bug, just complain. 
-			db.insert('ginfo', baseurl=web.ctx.home, owner='xwp owner', version='0.1')
-
-			self.delegate = db.select('ginfo', where='id=1')[0]
-			
-	def __getattr__(self, name):
-		return getattr(self.g, name)
-	
-	def __setattr__(self, name, value):
-		setattr(self.delegate, name, value)
-
-g_info = GlobalInfo()
-"""
-
+#def get_blogrolls(limit=None):
+#	return None
+#
+#
+#def new_uploadinfo(file_name, file_size):
+#	try:
+#		return db.insert('uploads', file_name=file_name, file_size=file_size)
+#	except:
+#		return None
+#
+#def get_uploadinfo(key):
+#	try:
+#		return db.select('uploads', where='id=$key', vars=locals())[0]
+#	except:
+#		return None
+#
+##TODO USE OPTIONS table.
+#class GlobalInfo(object):
+#	def __init__(self):
+#		#read basic db info from db.
+#		#read from web.ctx.
+#		try:
+#			self.delegate = db.select('ginfo', where='id=1')[0]
+#		except:
+#			# the table now is empty.
+#			# if insert failed, we consider it as a bug, just complain. 
+#			db.insert('ginfo', baseurl=web.ctx.home, owner='xwp owner', version='0.1')
+#
+#			self.delegate = db.select('ginfo', where='id=1')[0]
+#			
+#	def __getattr__(self, name):
+#		return getattr(self.g, name)
+#	
+#	def __setattr__(self, name, value):
+#		setattr(self.delegate, name, value)
+#
+#g_info = GlobalInfo()
+#
+#

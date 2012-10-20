@@ -4,7 +4,11 @@
 	</div>
 	<div class="floatright">
 		<a href="/admin">admin</a>
-		<a href="/login">login</a>
+		$if not session.loggedin: 
+			<a href="/login">login</a>
+		$else: 
+			$session.username
+
 	</div>
 
 	<div class="clear"></div>

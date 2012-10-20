@@ -123,13 +123,13 @@ class Upload(object):
 				web.badrequest()
 		else:
 			print i.FileData == {} or i.FileData == None, i.FileName, i.FileSize
-"""
+
 class Login(object):
 	def GET(self):
 		if utils.is_admin():
-			raise web.seeother('/index')
+			raise web.seeother('/')
 
-		return render.admin.login()
+		return render.admin.login(None)
 
 	def POST(self):
 		# get the md5-password from database by username
@@ -138,21 +138,22 @@ class Login(object):
 		i = web.input(username='', password='')
 
 		if i.username == '' or i.password == '':
-			return render.admin.login_error('password or username should not be null.')
+			return render.admin.login('password or username should not be null.')
 
 		#TODO to implement.
 		user = model.get_user(i.username) 
 		if not user: 
-			return render.admin.login_error('no such user.')
+			return render.admin.login('no such user.')
 		
 		pwd = i.password + salt
 		md5_pwd = md5.new(pwd).hexdigest()
 		if md5_pwd != user.password:
-			return render.admin.login_error('password incorrect.')
+			return render.admin.login('password incorrect.')
 
 		web.ctx.session.loggedin = 1
 		# TODO: should use a more readable var. 
-		web.ctx.session.user_id = 1
+		web.ctx.session.user_id = user.id
+		web.ctx.session.username = user.name
 
 		raise web.seeother('/admin')
 			
@@ -163,8 +164,7 @@ class Logout(object):
 		web.ctx.session.loggedin = 0
 		web.ctx.session.user_id = 0
 
-		raise web.seeother('/index')
-"""		
+		raise web.seeother('/')
 
 class NewCategory(object):
 	def GET(object):
@@ -192,14 +192,13 @@ class EditCategory(object):
 
 		if not i.name:
 			return admin_render.category(cid, i, 'name must be provided.')
-		else: 
-			if model.update_category(name=i.name, description=i.description, parent_id=i.parent_id):
+		elif model.update_category(name=i.name, description=i.description, parent_id=i.parent_id):
 			return admin_render.category(cid, i, 'category update ok.')
 
 class Setup(object):
 	def GET(self):
 		i = web.input(message=None)
-		return render.admin.setup(i.message)
+		return admin_render.setup(i.message)
 	
 	def POST(self):
 		i = web.input()
@@ -211,33 +210,36 @@ class Setup(object):
 		else:	
 			raise web.seeother('/admin/setup?message=update setup failed.')
 
-class PostAdmin(object):
+class AdminPosts(object):
 	def GET(self):
-		return render.admin.post_admin()
+		i = web.input(message=None)
+
+		return admin_render.admin_posts(i.message)
 
 	def POST(self):
 		i = web.input(del_post_array=[])
 
-		for pid in del_post_array:
+		for pid in i.del_post_array:
 			if not model.delete_post(pid):
-				pass
-				# log error delete failed.
+				raise web.seeother('/admin/admin-posts?message=delete post failed.')
 
-		raise web.seeother("/admin/post-admin")
+		raise web.seeother('/admin/admin-posts?message=delete post done.')
 
 # maybe here we need check code, it's dangerous to delete anything.
-class CategoryAdmin(object):
+class AdminCategories(object):
 	def GET(self):
-		return render.admin.category_admin()		
+		i = web.input(message=None)
+
+		return admin_render.admin_categories(i.message)
 	
 	def POST(self):
 		i = web.input(del_category_array=[])
 
-		for cid in del_category_array:
+		for cid in i.del_category_array:
 			if not model.delete_category(cid):
-				pass
+				raise web.seeother('/admin/admin-categories?message=delete category failed.')
 		
-		raise web.seeother("/admin/category-admin")
+		raise web.seeother('/admin/admin-categories/?message=delete category done.')
 
 class UserAdmin(object):
 	def GET(self):

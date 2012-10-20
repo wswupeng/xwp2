@@ -10,7 +10,7 @@ t_globals = {
     'model' : model,
     'render': render,
     'admin_render': admin_render,
-    #'gi' : g 
+    'session' : web.ctx.session,
     }
 
 web.template.Template.globals = t_globals

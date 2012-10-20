@@ -1,12 +1,16 @@
+$def with(message)
+
 <div id="post-admin">
-	<form action="/admin/post-admin" method="post">
+	<form action="/admin/admin-posts" method="post">
 		<h1>
 			manage posts (<a href="/admin/new-post">new</a>)
 		</h1>
+		
+		$if message: <h2>$message</h2>
 		<!-- TODO, get post num 
 			<h2>all posts(model.get_posts)</h2>
 		-->
-		<input type="submit" name="delete" value="1" />
+		<input type="submit" name="delete" value="delete" />
 		<table>
 			<thead>
 				<tr>

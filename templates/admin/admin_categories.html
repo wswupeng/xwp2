@@ -1,8 +1,11 @@
-<div id="category-admin">
-	<form action="/admin/category-admin" method="post">
-		<h1>manage category</h1>
-		<input type="submit" name="delete" value="1" />
+$def with(message)
 
+<div id="category-admin">
+	<form action="/admin/admin-categories" method="post">
+		<h1>manage category</h1>
+		<input type="submit" name="delete" value="delete" />
+
+		$if message: <h2>$message</h2>
 		<table>
 			<thead>
 				<tr>
@@ -15,6 +18,8 @@
 
 			<tbody>
 				$for c in model.get_all_categories():
+					$if c.id == 1: $continue
+
 					<tr>
 						<td>						
 							<input type="checkbox" name="del_category_array" id="category-$c.id" size="45" tabindex="4" value="$c.id"/>

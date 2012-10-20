@@ -65,8 +65,8 @@ create table users
 	password text not null,
 	priority text not null, /*admin, common.*/
 	registered_on datetime not null default '0000-00-00 00:00:00',
-	email text,
-	url text,
+	email text default '',
+	url text default '',
 
 	primary key (id)
 );
@@ -122,10 +122,10 @@ create table term_relationship
 create table options
 (
 	is_custom int not null, /*0:system options, 1:custom options.*/
-	option_name text not null,
-	option_value text not null,
+	name varchar(255) not null,
+	value text not null,
 
-	primary key (option_name)
+	primary key (name)
 );
 
 
@@ -134,6 +134,20 @@ insert into terms(name, parent_id, description, type) values ('uncategorized', 0
 insert into terms(name, parent_id, description, type) values ('NoneTag', 0, '', 'post_tag');
 
 /*
+	insert into option, global settings. 
+	insert into options(is_custom, name, value) values(1, '', '')
+*/
+insert into options(is_custom, name, value) values(1, 'title', 'xwp');
+insert into options(is_custom, name, value) values(1, 'subtitle', 'xwp');
+insert into options(is_custom, name, value) values(1, 'notice', 'yes we can!');
+
+/*?? should we decide it in */
+insert into options(is_custom, name, value) values(1, 'baseurl', '//localhost:8080');
+insert into options(is_custom, name, value) values(1, 'post_per_page', '10');
+insert into options(is_custom, name, value) values(1, 'comment_per_page', '30');
+
+/*
 insert into posts
 insert into users
 */
+insert into users(name, password, priority) values('admin', 'bb798daca8bf1a25ee11559aa52b6c89', 'admin');

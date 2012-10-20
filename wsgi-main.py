@@ -3,7 +3,7 @@ from urls import *
 import web
 
 app = web.application(urls, globals())
-#application = app.wsgifunc()
+application = app.wsgifunc()
 session = web.session.Session(app, web.session.DiskStore('userinfo'), initializer={'user_id': 0, 'username' : 'default', 'loggedin' : 0})
 
 def session_hook():
