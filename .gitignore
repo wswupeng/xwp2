@@ -1,4 +1,5 @@
 *.pyc
+recycle
 tags
 static/upload
 userinfo
