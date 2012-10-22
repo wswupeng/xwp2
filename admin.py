@@ -158,7 +158,7 @@ class Login(object):
 		raise web.seeother('/admin')
 			
 class Logout(object):
-	def POST(self):
+	def GET(self):
 		utils.seeother_if_notadmin('/login')
 		
 		web.ctx.session.loggedin = 0
